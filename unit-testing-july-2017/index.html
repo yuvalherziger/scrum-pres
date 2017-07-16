@@ -1,0 +1,240 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>quintly Scrum Team - Unit Testing</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<style>
+			.red {
+				color: #dd0000;
+			}
+
+			.blue {
+				color: #4444ff;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h1 style="-webkit-text-stroke-width: 1px; -webkit-text-stroke-color: #333;">Unit Testing</h1>
+					<div>July 2017</div>
+				</section>
+				<section>
+					<h2>What is Unit Testing?</h2>
+					<ul>
+						<li>An individual <i class="blue">Unit</i> or <i class="blue">Component</i> is tested to make sure it <b class="red">does what it's supposed to do</b></li>
+						<li><i class="blue">White Box Testing</i> - testing base on an analysis of a unit's internal structure; thus <b class="blue">White Box</b> and not <b class="red">Black Box</b></li>
+						<li>In OOP, the smallest unit is referred to a method</li>
+					</ul>
+				</section>
+				<section>
+					<h1>Why Unit Testing? (1)</h1>
+					<ul>
+						<li>Reduces bugs in new features</li>
+						<li>Reduces bugs in existing features</li>
+						<li>Best code documentation</li>
+						<li>Reduces cost of change</li>
+						<li>Improves software design</li>
+						<li>Enables refactoring with confidence</li>
+					</ul>
+				</section>
+				<section>
+					<h1>Why Unit Testing? (2)</h1>
+					<ul>
+						<li>Tests constrain features</li>
+						<li>Defends against changes by other developers</li>
+						<li>It's fun 🎉</li>
+						<li>Forces on to slow down and think</li>
+						<li>Makes development faster</li>
+						<li>Reduces fear</li>
+					</ul>
+				</section>
+				<section>
+					<h1>Is the goal really to increase code coverage to 100%?</h1>
+				</section>
+				<section>
+					<h2>Nope...</h2>
+				</section>
+				<section>
+					<h2>Then what is the goal?</h2>
+					<h2>Why is 100% code coverage so important?</h2>
+				</section>
+				<section>
+					<h2>Then what is the goal?</h2>
+					<ul>
+						<li>Isolate a unit from its environment</li>
+						<li>Test <b class="red">EVERYTHING</b> about the unit's behaviour</li>
+						<li>Then 100% coverage is the tool to achieve the main goals</li>
+					</ul>
+				</section>
+				<section data-background-image="img/sut.jpg" data-background-size="1000px">
+
+				</section>
+				<section>
+					<h2>Problems</h2>
+					<ul>
+						<li>How can I tell if the unit is designed in a testable way?</li>
+						<li>Is a dependency (e.g., an HTTP request) really part of the SuT (Subject under Test)?</li>
+						<li>What if I have no choice but to talk to the API?</li>
+						<li>Do I really care about anything else but the SuT?</li>
+					</ul>
+				</section>
+				<section>
+					<h2>The Testing Toolbox</h2>
+					<ul>
+						<li><b class="blue">Mock</b> - object/method that simulates a real object/method</li>
+						<li><b class="blue">Stub</b> - a piece of code that's meant to represent data/behaviour of a real functionality in the system</li>
+						<li><b class="blue">Dependency Injection</b> - A unit almost never instantiates a new object, unless it's meant to do so (e.g. a Factory)</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Dependency Injection</h2>
+					<pre style="box-shadow:none">
+						<code data-trim class="php" style="font-size: 0.7em;line-height: 1em">
+class MyClass
+{
+    /** @var HttpClient */
+    private $httpClient;
+
+    public function __construct()
+    {
+        $this->httpClient = new HttpClient();
+    }
+
+    public function talkToFacebook()
+    {
+        $rawData = $this->httpClient->get('https://graph.facebook.com/...');
+        return $this->transformData($rawData);
+    }
+
+    private function transformData()
+    {
+        // do what MyClass is supposed to do best:
+        // fix dates, fill in gaps, remove bad rows,
+        // put in value objects, etc.
+    }
+}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h2>Dependency Injection</h2>
+					<pre style="box-shadow:none">
+						<code data-trim class="php" style="font-size: 0.7em;line-height: 1em">
+class MyClass
+{
+    /** @var HttpClient */
+    private $httpClient;
+
+    public function __construct(HttpClient $httpClient)
+	{
+        $this->httpClient = $httpClient;
+    }
+
+    public function talkToFacebook()
+    {
+        $rawData = $this->httpClient->get('https://graph.facebook.com/...');
+        return $this->transformData($rawData);
+    }
+
+    private function transformData()
+    {
+        // do what MyClass is supposed to do best:
+        // fix dates, fill in gaps, remove bad rows,
+        // put in value objects, etc.
+    }
+}
+						</code>
+					</pre>
+				</section>
+				<section data-background-image="img/Mockinbird2_Comic.png" data-background-size="1000px">
+					<div style="text-align: right;"><h2>Mocking (bird)</h2></div>
+				</section>
+				<section>
+					<div style="font-size:0.5em">The SuT (MyClass):</div>
+					<pre style="box-shadow:none;margin:0 0 0 0">
+						<code data-trim class="php" style="font-size: 0.6em;line-height: 0.9em">
+class MyClass
+{
+    /** @var HttpClient */
+    private $httpClient;
+
+    public function __construct(HttpClient $httpClient)
+    {
+        $this->httpClient = $httpClient;
+    }
+
+    public function talkToFacebook()
+    {
+        $rawData = $this->httpClient->get('https://graph.facebook.com/...');
+        return $this->transformData($rawData);
+    }
+
+    private function transformData()
+    {
+        // do what MyClass is supposed to do best:
+        // fix dates, fill in gaps, remove bad rows,
+        // put in value objects, etc.
+    }
+}
+						</code>
+					</pre>
+					<div style="font-size:0.5em">The unit test:</div>
+					<pre style="box-shadow:none;margin:0 0 0 0">
+						<code data-trim class="php" style="font-size: 0.6em;line-height: 0.9em">
+class MyClassTest extends \PHPUnit_Framework_TestCase
+{
+    public function testTalkToFacebook()
+    {
+        $httpClientMock = $this->getMock(HttpClient::class);
+        $httpClientMock->expects($this->once())->method('get')
+            ->with('https://graph.facebook.com/...')
+            ->willReturn([ /* response stub */ ]);
+        $myClass = new MyClass($httpClientMock);
+        $actualResult = $myClass->talkToFacebook();
+        $expectedResult = [ /* expected result stub */ ];
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+}
+						</code>
+					</pre>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
