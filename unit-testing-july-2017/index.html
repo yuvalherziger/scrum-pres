@@ -230,7 +230,7 @@ class MyClassTest extends \PHPUnit_Framework_TestCase
 					<ul style="font-size: 0.8em">
 						<li><b class="red">Value Objects</b> - They are simple to instantiate and work with</li>
 						<li><b class="red">MySQL Database</b> - Our tests support a schema-only database with its own entity manager; sometimes it's easier to read a MySQL-based unit test instead of mocks</li>
-						<li><b class="red">Dependency Injection</b> - A unit almost never instantiates a new object, unless it's meant to do so (e.g. a Factory)</li>
+						<li><b class="red">Other Examples</b> - collections of value objects/entities, a logger, a speed limiter, a DateTime object, etc.</li>
 					</ul>
 				</section>
 				<section>
@@ -252,6 +252,23 @@ $dynamoDbFetcherMock
         [/* dataset 3 */],
         [/* dataset 4 */]
     );
+						</code>
+					</pre>
+				</section>
+				<section>
+					<h3>What about exceptions?</h3>
+					<ul>
+						<li>Exception handling is an integral part of the code, they need to be tested too</li>
+						<li>This is a 100% valid (and important) assertion:</li>
+					</ul>
+					<pre style="box-shadow:none;margin:0 0 0 0">
+						<code data-trim class="php" style="font-size: 0.7em;line-height: 0.9em">
+$this->setExpectedException(
+    NoValidAccessTokenFoundException::class,
+    "No access token found"
+);
+
+$accessToken = $accessTokenRepository->findRandomAccessToken();
 						</code>
 					</pre>
 				</section>
