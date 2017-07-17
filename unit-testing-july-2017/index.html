@@ -241,7 +241,7 @@ class MyClassTest extends \PHPUnit_Framework_TestCase
 						<li>Is the following block an assertion?</li>
 					</ul>
 					<pre style="box-shadow:none;margin:0 0 0 0">
-						<code data-trim class="php" style="font-size: 0.7em;line-height: 0.9em">
+						<code data-trim class="php" style="font-size: 0.7em;line-height: 1em">
 $dynamoDbFetcherMock = $this->getMock(DynamoDbDataFetcher::class);
 $dynamoDbFetcherMock
     ->expects($this->exactly(4))
@@ -262,7 +262,7 @@ $dynamoDbFetcherMock
 						<li>This is a 100% valid (and important) assertion:</li>
 					</ul>
 					<pre style="box-shadow:none;margin:0 0 0 0">
-						<code data-trim class="php" style="font-size: 0.7em;line-height: 0.9em">
+						<code data-trim class="php" style="font-size: 0.7em;line-height: 1.1em">
 $this->setExpectedException(
     NoValidAccessTokenFoundException::class,
     "No access token found"
@@ -273,11 +273,26 @@ $accessToken = $accessTokenRepository->findRandomAccessToken();
 					</pre>
 				</section>
 				<section>
-					<h3>Edge case - example</h3>
+					<h3>Edge cases</h3>
 					<ul>
 						<li>Guzzle HTTP clients - Guzzle provides a mock stack of its own, <a href="https://github.com/quintly/quintly/blob/e394c5d166862539df0eb06390f946fb6f7e0665/src/Test/Unit/Infrastructure/WebServiceClient/FacebookApi/ApiServiceClientTest.php#L54-L54">see example</a></li>
 						<li>Middleware - easy to mock with Guzzle's mock stack, <a href="https://github.com/quintly/quintly/blob/e394c5d166862539df0eb06390f946fb6f7e0665/src/Test/Unit/Infrastructure/WebServiceClient/FacebookApi/Middleware/AccessTokenMiddlewareTest.php#L38-L44">see example</a></li>
 					</ul>
+				</section>
+				<section>
+					<h3>Edge cases</h3>
+					<ul>
+						<li>What about <b class="red">Factories</b> (and sometimes <b class="red">Services</b>)? They crate object instances, is that wrong?</li>
+						<li>Nope! It's a their role to create new objects</li>
+						<li>What do I test, then?</li>
+					</ul>
+					<pre style="box-shadow:none;margin:0 0 0 0">
+						<code data-trim class="php" style="font-size: 0.7em;line-height: 1.1em">
+$factory = new Factory();
+$httpClient = $factory->createHttpClient();
+$this-assertInstanceOf(HttpClient::class, $httpClient);
+						</code>
+					</pre>
 				</section>
 				<section>
 					<h3>Summary</h3>
