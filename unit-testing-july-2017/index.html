@@ -272,6 +272,22 @@ $accessToken = $accessTokenRepository->findRandomAccessToken();
 						</code>
 					</pre>
 				</section>
+				<section>
+					<h3>Edge case - example</h3>
+					<ul>
+						<li>Guzzle HTTP clients - Guzzle provides a mock stack of its own, <a href="https://github.com/quintly/quintly/blob/e394c5d166862539df0eb06390f946fb6f7e0665/src/Test/Unit/Infrastructure/WebServiceClient/FacebookApi/ApiServiceClientTest.php#L54-L54">see example</a></li>
+						<li>Middleware - easy to mock with Guzzle's mock stack, <a href="https://github.com/quintly/quintly/blob/e394c5d166862539df0eb06390f946fb6f7e0665/src/Test/Unit/Infrastructure/WebServiceClient/FacebookApi/Middleware/AccessTokenMiddlewareTest.php#L38-L44">see example</a></li>
+					</ul>
+				</section>
+				<section>
+					<h3>Summary</h3>
+					<ul>
+						<li><b class="blue">SuT</b> (<b class="blue">S</b>ubject <b class="blue">u</b>nder <b class="blue">T</b>est) - isolate it, make it a <i>White Box</i></li>
+						<li><b class="blue">Rule of thumb</b> - if you can't isolate the SuT, then the design of the SuT is wrong</li>
+						<li><b class="blue">Dependency Injection</b> - you can't do unit testing without it</li>
+						<li><b class="blue">Focus on the SuT</b> - nothing else is important; we are not testing the dependencies, we are testing the SuT (class) and its units (methods)</li>
+					</ul>
+				</section>
 			</div>
 		</div>
 
