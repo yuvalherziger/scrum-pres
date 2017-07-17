@@ -217,6 +217,44 @@ class MyClassTest extends \PHPUnit_Framework_TestCase
 						</code>
 					</pre>
 				</section>
+				<section>
+					<h3>When should I use mocks?</h3>
+					<ul style="font-size: 0.8em">
+						<li><b class="blue">HTTP Clients</b> - when a dependency of SuT calls an external source like an API</li>
+						<li><b class="blue">Complex Dependency</b> - some dependencies have their own dependencies; a real object is sometimes a waste of time on <i class="red">boilerplate code inside a test</i></li>
+						<li><b class="blue">Dependency Injection</b> - A unit almost never instantiates a new object, unless it's meant to do so (e.g. a Factory)</li>
+					</ul>
+				</section>
+				<section>
+					<h3>When can mocks be avoided?</h3>
+					<ul style="font-size: 0.8em">
+						<li><b class="red">Value Objects</b> - They are simple to instantiate and work with</li>
+						<li><b class="red">MySQL Database</b> - Our tests support a schema-only database with its own entity manager; sometimes it's easier to read a MySQL-based unit test instead of mocks</li>
+						<li><b class="red">Dependency Injection</b> - A unit almost never instantiates a new object, unless it's meant to do so (e.g. a Factory)</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Assertions</h2>
+					<ul>
+						<li>Some unit tests are simple, e.g. Inputs ---> Output</li>
+						<li>Some units do not have an output</li>
+						<li>Is the following block an assertion?</li>
+					</ul>
+					<pre style="box-shadow:none;margin:0 0 0 0">
+						<code data-trim class="php" style="font-size: 0.7em;line-height: 0.9em">
+$dynamoDbFetcherMock = $this->getMock(DynamoDbDataFetcher::class);
+$dynamoDbFetcherMock
+    ->expects($this->exactly(4))
+    ->method('write')
+    ->withConsecutive(
+        [/* dataset 1 */],
+        [/* dataset 2 */],
+        [/* dataset 3 */],
+        [/* dataset 4 */]
+    );
+						</code>
+					</pre>
+				</section>
 			</div>
 		</div>
 
